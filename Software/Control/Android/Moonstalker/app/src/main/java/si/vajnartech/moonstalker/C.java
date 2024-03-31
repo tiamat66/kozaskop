@@ -5,7 +5,9 @@ import java.util.UUID;
 @SuppressWarnings("unused")
 public final class C
 {
-  public static final String TAG = "IZAABELA";
+  public static final String TAG = "PEPE";
+  public static final AstroObject CALIBRATOR =
+          new AstroObject("Polaris", "2h31m48.704s", "+89°15'50.72", "Ursa Major");
 
   static final int TRSHLD_BTRY = 11000;  // milivolts
 
@@ -47,6 +49,9 @@ public final class C
   public static final int ST_INFO = 24;
   public static final int ST_BATTERY = 25;
   public static final int ST_ASTRO_DATA = 26;
+  public static final int ST_POS = 27;
+
+  public static final int ST_IDLE = 28;
 
   // Triggers
   static final int ST_MOVING_S = 16;
@@ -63,12 +68,6 @@ public final class C
   static final String NW = "NW";
   static final String NONE = "NONE";
   static final String CLEAR = "";
-
-  public static String curConstellation = "";
-  static String calObj = "Polaris";
-  static String calConstellation = "Ursa Major";
-  public static AstroObject curObj = new AstroObject(calObj, 0.0, 0.0, "", "");
-
   static boolean monitoring = false;
   static boolean mStatus = false;
   static String  curMessage = "";

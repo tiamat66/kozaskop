@@ -1,5 +1,6 @@
 package si.vajnartech.moonstalker.processor;
 
+import static si.vajnartech.moonstalker.C.CALIBRATOR;
 import static si.vajnartech.moonstalker.C.ST_ASTRO_DATA;
 import static si.vajnartech.moonstalker.C.ST_BATTERY;
 import static si.vajnartech.moonstalker.C.ST_CONNECTION_ERROR;
@@ -7,11 +8,13 @@ import static si.vajnartech.moonstalker.C.ST_ERROR;
 import static si.vajnartech.moonstalker.C.ST_INFO;
 import static si.vajnartech.moonstalker.C.ST_MOVING;
 import static si.vajnartech.moonstalker.C.ST_NOT_READY;
+import static si.vajnartech.moonstalker.C.ST_POS;
 import static si.vajnartech.moonstalker.C.ST_READY;
 import static si.vajnartech.moonstalker.C.ST_WAITING;
 import static si.vajnartech.moonstalker.C.ST_WARNING;
 import static si.vajnartech.moonstalker.OpCodes.MSG_BATTERY;
 import static si.vajnartech.moonstalker.OpCodes.MSG_BATTERY_RES;
+import static si.vajnartech.moonstalker.OpCodes.MSG_CALIBRATED;
 import static si.vajnartech.moonstalker.OpCodes.MSG_CONNECT;
 import static si.vajnartech.moonstalker.OpCodes.MSG_CONN_ERROR;
 import static si.vajnartech.moonstalker.OpCodes.MSG_ERROR;
@@ -21,6 +24,7 @@ import static si.vajnartech.moonstalker.OpCodes.MSG_MOVE;
 import static si.vajnartech.moonstalker.OpCodes.MSG_MV_ACK;
 import static si.vajnartech.moonstalker.OpCodes.MSG_NOT_READY;
 import static si.vajnartech.moonstalker.OpCodes.MSG_PING;
+import static si.vajnartech.moonstalker.OpCodes.MSG_POS;
 import static si.vajnartech.moonstalker.OpCodes.MSG_READY;
 import static si.vajnartech.moonstalker.OpCodes.MSG_WARNING;
 
@@ -52,10 +56,12 @@ public class QueueUI extends Handler
             new CmdPing(this);
             actions.updateStatus(ST_WAITING);
         } else if (message.what == MSG_MOVE) {
-            Command obj = (Command) message.obj;
-            new CmdMove(this, obj.ra, obj.dec);
+            String obj = (String) message.obj;
+            new CmdMove(this, obj);
             actions.updateStatus(ST_WAITING);
-
+        } else if (message.what == MSG_CALIBRATED) {
+            String obj = (String) message.obj;
+            new CmdCalibrated(this, obj);
         } else if (message.what == MSG_GET_ASTRO_DATA) {
             actions.updateStatus(ST_ASTRO_DATA, message.obj);
         } else if (message.what == MSG_NOT_READY) {
@@ -78,6 +84,9 @@ public class QueueUI extends Handler
         } else if (message.what == MSG_BATTERY_RES) {
             String msg = (String) message.obj;
             actions.updateStatus(ST_BATTERY, msg);
+        } else if (message.what == MSG_POS) {
+            String msg = (String) message.obj;
+            actions.updateStatus(ST_POS, msg);
         }
     }
 }

@@ -3,8 +3,11 @@ package si.vajnartech.moonstalker.processor;
 import static si.vajnartech.moonstalker.OpCodes.MSG_CONN_ERROR;
 import static si.vajnartech.moonstalker.OpCodes.MSG_ERROR;
 import static si.vajnartech.moonstalker.OpCodes.MSG_INFO;
+import static si.vajnartech.moonstalker.OpCodes.MSG_POS;
 import static si.vajnartech.moonstalker.OpCodes.MSG_READY;
 import static si.vajnartech.moonstalker.OpCodes.MSG_WARNING;
+
+import android.util.Log;
 
 import com.google.gson.Gson;
 
@@ -32,6 +35,8 @@ public class CmdPing extends Controller<String>
             queue.obtainMessage(MSG_WARNING, msg).sendToTarget();
         } else if (cmdResult.startsWith("INFO")) {
             queue.obtainMessage(MSG_INFO, msg).sendToTarget();
+        } else if (cmdResult.startsWith("POS")) {
+            queue.obtainMessage(MSG_POS, msg).sendToTarget();
         }
     }
 

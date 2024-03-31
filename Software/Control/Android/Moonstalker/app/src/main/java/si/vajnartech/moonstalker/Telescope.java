@@ -4,10 +4,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import static si.vajnartech.moonstalker.C.K;
-import static si.vajnartech.moonstalker.C.ST_READY;
 import static si.vajnartech.moonstalker.C.TAG;
-import static si.vajnartech.moonstalker.C.calObj;
-import static si.vajnartech.moonstalker.C.curObj;
 import static si.vajnartech.moonstalker.OpCodes.*;
 
 @SuppressWarnings({"SameParameterValue", "unused"})
@@ -23,14 +20,14 @@ public abstract class Telescope extends PositionCalculus
     super(act);
   }
 
-  void calibrate()
-  {
-    setPosition(curObj); // setCurrent object
-    raDec2AltAz();
-    TelescopeStatus.set(ST_READY);
-    curObj = new AstroObject(calObj, 0.0, 0.0, "", "");
-    Log.i(TAG, "Calibration object is " + curObj);
-  }
+//  void calibrate()
+//  {
+//    setPosition(curObj); // setCurrent object
+//    raDec2AltAz();
+//    TelescopeStatus.set(ST_READY);
+//    curObj = new AstroObject(calObj, 0.0, 0.0, "", "");
+//    Log.i(TAG, "Calibration object is " + curObj);
+//  }
 
   private void move(int hSteps, int vSteps)
   {

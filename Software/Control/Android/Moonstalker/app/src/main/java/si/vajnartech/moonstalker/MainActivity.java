@@ -1,6 +1,7 @@
 package si.vajnartech.moonstalker;
 
 import static android.os.AsyncTask.THREAD_POOL_EXECUTOR;
+import static si.vajnartech.moonstalker.C.CALIBRATOR;
 import static si.vajnartech.moonstalker.C.SERVER_NAME;
 import static si.vajnartech.moonstalker.C.ST_CALIBRATED;
 import static si.vajnartech.moonstalker.C.ST_CALIBRATING;
@@ -11,8 +12,7 @@ import static si.vajnartech.moonstalker.C.ST_MOVING;
 import static si.vajnartech.moonstalker.C.ST_NOT_CONNECTED;
 import static si.vajnartech.moonstalker.C.ST_READY;
 import static si.vajnartech.moonstalker.C.ST_TRACING;
-import static si.vajnartech.moonstalker.C.ST_WAITING;
-import static si.vajnartech.moonstalker.C.calObj;
+import static si.vajnartech.moonstalker.OpCodes.MSG_CALIBRATED;
 import static si.vajnartech.moonstalker.OpCodes.MSG_CONNECT;
 import static si.vajnartech.moonstalker.OpCodes.MSG_MOVE;
 
@@ -75,6 +75,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 {
   public DataAstroObj astroData;
 
+  public AstroObject curObject;
   protected StateMachine machine = new StateMachine(this);
 
   protected QueueUI queueUI = new QueueUI(new Actions() {
@@ -106,6 +107,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
   FloatingActionButton fab;
   DrawerLayout drawer;
 
+  ///////////////////////////////////////////////////////////////////////////
+  public void setPosMessage()
+  {
+    terminal.writePosition(curObject);
+  }
   public void setInfoMessage(int val)
   {
     terminal.setText(tx(val));
@@ -149,7 +155,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     C.curMessage = tx(R.string.not_connected);
 
     SharedPref.setDefault("device_name", SERVER_NAME);
-    SharedPref.setDefault("calibration_obj", calObj);
     fab = findViewById(R.id.fab);
     fab.setOnClickListener(new View.OnClickListener()
     {
@@ -177,10 +182,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if (TelescopeStatus.getMode() == ST_TRACING) {
           update(ST_READY, ST_MOVE_TO_OBJECT);
         } else if (machine.mode.get() == ST_CALIBRATING) {
-          machine.mode.set(ST_CALIBRATED);
-//          ctrl.calibrate();
+          calibrate();
         } else if (TelescopeStatus.get() == ST_READY && TelescopeStatus.getMode() == ST_MOVE_TO_OBJECT) {
-          ctrl.move(C.curObj);
+//          ctrl.move(C.curObj);
         }
       }
     });
@@ -349,65 +353,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     queueUI.obtainMessage(MSG_MOVE, new Command(ra, dec)).sendToTarget();
   }
 
+  private void calibrate()
+  {
+    machine.mode.set(ST_CALIBRATED);
+    queueUI.obtainMessage(MSG_CALIBRATED, CALIBRATOR.toString()).sendToTarget();
+  }
+
 
   private void setPositionString()
   {
     SelectFragment.setPositionString(this);
-  }
-
-  private void connect(boolean exe)
-  {
-    BlueTooth b = new BlueTooth(new SharedPref(this).getString("device_name"), this, new BTInterface()
-    {
-      @Override
-      public void exit(String msg)
-      {
-        myMessage(msg);
-        try {
-          Thread.sleep(5000);
-        } catch (InterruptedException e) {
-          e.printStackTrace();
-        }
-        finish();
-      }
-
-      @Override
-      public void progressOn()
-      {
-        pOn(ProgressType.CONNECTING);
-      }
-
-      @Override
-      public void progressOff()
-      {
-        pOff();
-      }
-
-      @Override
-      public void onOk()
-      {
-        runOnUiThread(() -> Toast.makeText(MainActivity.this, tx(R.string.connected), Toast.LENGTH_SHORT).show());
-      }
-
-      @Override
-      public void onError()
-      {
-        myMessage(tx(R.string.connection_failed));
-      }
-    });
-
-    if (exe)
-      b.executeOnExecutor(THREAD_POOL_EXECUTOR);
-  }
-
-
-
-  private void initControl()
-  {
-    runOnUiThread(() -> {
-      ctrl = new Control(MainActivity.this);
-      ctrl.init();
-    });
   }
 
   @Override

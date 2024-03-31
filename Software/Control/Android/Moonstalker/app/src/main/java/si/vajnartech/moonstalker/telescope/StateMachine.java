@@ -1,11 +1,14 @@
 package si.vajnartech.moonstalker.telescope;
 
+import static si.vajnartech.moonstalker.C.CALIBRATOR;
 import static si.vajnartech.moonstalker.C.ST_ASTRO_DATA;
 import static si.vajnartech.moonstalker.C.ST_CALIBRATED;
 import static si.vajnartech.moonstalker.C.ST_CALIBRATING;
 import static si.vajnartech.moonstalker.C.ST_CONNECTION_ERROR;
+import static si.vajnartech.moonstalker.C.ST_IDLE;
 import static si.vajnartech.moonstalker.C.ST_NOT_CONNECTED;
 import static si.vajnartech.moonstalker.C.ST_NOT_READY;
+import static si.vajnartech.moonstalker.C.ST_POS;
 import static si.vajnartech.moonstalker.C.ST_READY;
 import static si.vajnartech.moonstalker.C.ST_WAITING;
 
@@ -68,9 +71,12 @@ public class StateMachine extends Thread
                    act.logMessage("...connection error");
                } else if (status.get() == ST_ASTRO_DATA) {
                    act.astroData = new DataAstroObj(status.data);
-                   act.setInfoMessage(R.string.ready);
-                   act.updateMenu(true, true, false, false);
-                   act.updateFab(R.color.colorOk2);
+                   status.set(ST_READY);
+               } else if (status.get() == ST_POS) {
+                   String[] res = status.message.split(" ");
+                   act.curObject.setPosition(res[0], res[1]);
+                   act.setPosMessage();
+                   status.set(ST_IDLE);
                }
 
            } else if (curMode != mode.get()) {
@@ -80,7 +86,7 @@ public class StateMachine extends Thread
                    act.promptToCalibration();
                    act.setInfoMessage(R.string.calibrating);
                } else if (mode.get() == ST_CALIBRATED) {
-                   // potrdi current objekt
+                   act.curObject = new AstroObject(CALIBRATOR);
                    act.setFragment("control", ControlFragment.class, new Bundle());
                    act.updateMenu(false, true, true, true);
                    act.setInfoMessage(R.string.ready);

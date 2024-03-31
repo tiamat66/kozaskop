@@ -10,12 +10,11 @@ import java.io.BufferedReader;
 
 public class CmdMove extends Controller<String>
 {
-    protected double ra, dec;
-    public CmdMove(QueueUI queue, double ra, double dec)
+    protected String object;
+    public CmdMove(QueueUI queue, String object)
     {
         super("move", queue);
-        this.ra = ra;
-        this.dec = dec;
+        this.object = object;
     }
 
     @Override
@@ -41,7 +40,7 @@ public class CmdMove extends Controller<String>
     @Override
     public String backgroundFunc()
     {
-        return callServer(new Command(ra, dec));
+        return callServer(object);
     }
 }
 

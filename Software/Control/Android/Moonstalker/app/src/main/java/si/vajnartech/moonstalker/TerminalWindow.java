@@ -3,6 +3,8 @@ package si.vajnartech.moonstalker;
 import android.view.View;
 import android.widget.TextView;
 
+import java.text.DecimalFormat;
+
 @SuppressWarnings("SameParameterValue")
 final class TerminalWindow
 {
@@ -26,11 +28,24 @@ final class TerminalWindow
     act.refreshCurrentFragment();
   }
 
+  void writePosition(AstroObject obj)
+  {
+    setText(formatPositionString(obj, 0));
+  }
+
   void show(boolean sh)
   {
     if (sh)
       tv.setVisibility(View.VISIBLE);
     else
       tv.setVisibility(View.GONE);
+  }
+
+  private String formatPositionString(AstroObject obj,  int mode)
+  {
+
+    if (mode == 1)
+      return String.format("%s | %s", obj.azimuth, obj.altitude);
+    return String.format("%s (%s)\n%s | %s", obj.name, obj.constellation, obj.azimuth, obj.altitude);
   }
 }
