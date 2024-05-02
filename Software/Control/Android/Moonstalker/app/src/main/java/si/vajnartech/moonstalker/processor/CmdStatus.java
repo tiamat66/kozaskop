@@ -22,15 +22,14 @@ public class CmdStatus extends Controller<String>
                 new CmdGetAstroData(queue);
             } else if (cmdResult.equals("NOT_RDY")) {
                 queue.obtainMessage(MSG_NOT_READY).sendToTarget();
-            }  else if (cmdResult.equals("TIMEOUT")) {
+            } else if (cmdResult.equals("TIMEOUT")) {
                 queue.obtainMessage(MSG_CONN_ERROR).sendToTarget();
             }
         }
     }
 
     @Override
-    protected
-    String deserialize(BufferedReader br)
+    protected String deserialize(BufferedReader br)
     {
         return new Gson().fromJson(br, String.class);
     }
