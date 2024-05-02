@@ -7,8 +7,6 @@ import static si.vajnartech.moonstalker.OpCodes.MSG_POS;
 import static si.vajnartech.moonstalker.OpCodes.MSG_READY;
 import static si.vajnartech.moonstalker.OpCodes.MSG_WARNING;
 
-import android.util.Log;
-
 import com.google.gson.Gson;
 
 import java.io.BufferedReader;
@@ -31,7 +29,7 @@ public class CmdPing extends Controller<String>
             queue.obtainMessage(MSG_CONN_ERROR).sendToTarget();
         } else if (cmdResult.startsWith("ERROR")) {
             queue.obtainMessage(MSG_ERROR, msg).sendToTarget();
-        }  else if (cmdResult.startsWith("WARNING")) {
+        } else if (cmdResult.startsWith("WARNING")) {
             queue.obtainMessage(MSG_WARNING, msg).sendToTarget();
         } else if (cmdResult.startsWith("INFO")) {
             queue.obtainMessage(MSG_INFO, msg).sendToTarget();
