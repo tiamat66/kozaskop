@@ -37,7 +37,7 @@ public class ManualFragment extends MyFragment implements View.OnTouchListener
   void updateArrows()
   {
     if (view == null) return;
-    SVGImageView iv = view.findViewById(R.id.keypad);
+    SVGImageView iv = view.findViewById(R.id.keypad_julen);
     iv.setImageDrawable(new SVGDrawable(getResources(), R.raw.keyboard_arrows, 800, 800));
     iv.setOnTouchListener(this);
   }

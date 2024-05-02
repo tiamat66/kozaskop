@@ -27,7 +27,7 @@ public abstract class MyFragment extends DialogFragment
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
   {
-    View res = inflater.inflate(R.layout.content_main, container, false);
+    View res = inflater.inflate(R.layout.main_layout, container, false);
     TextView tv = res.findViewById(R.id.msg_window);
     tv.setVisibility(View.VISIBLE);
     tv.setText(C.curMessage);
