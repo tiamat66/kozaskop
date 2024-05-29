@@ -1,6 +1,7 @@
 package si.vajnartech.moonstalker.processor;
 
 import static si.vajnartech.moonstalker.OpCodes.MSG_CONN_ERROR;
+import static si.vajnartech.moonstalker.OpCodes.MSG_GET_ASTRO_DATA;
 import static si.vajnartech.moonstalker.OpCodes.MSG_NOT_READY;
 
 import com.google.gson.Gson;
@@ -9,21 +10,23 @@ import java.io.BufferedReader;
 
 public class CmdStatus extends Controller<String>
 {
-    public CmdStatus(QueueUI queue)
+    public CmdStatus(Processor machine)
     {
-        super("get_status", queue);
+        super("get_status", machine);
     }
 
+    /** @noinspection IfCanBeSwitch*/
     @Override
     protected void onPostExecute(String cmdResult)
     {
         if (cmdResult != null) {
             if (cmdResult.equals("RDY")) {
-                new CmdGetAstroData(queue);
-            } else if (cmdResult.equals("NOT_RDY")) {
-                queue.obtainMessage(MSG_NOT_READY).sendToTarget();
+                machine.set(MSG_GET_ASTRO_DATA);
+            }
+            else if (cmdResult.equals("NOT_RDY")) {
+                machine.set(MSG_NOT_READY);
             } else if (cmdResult.equals("TIMEOUT")) {
-                queue.obtainMessage(MSG_CONN_ERROR).sendToTarget();
+                machine.set(MSG_CONN_ERROR);
             }
         }
     }
