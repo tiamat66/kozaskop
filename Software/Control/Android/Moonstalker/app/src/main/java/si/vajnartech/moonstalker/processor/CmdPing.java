@@ -1,9 +1,9 @@
 package si.vajnartech.moonstalker.processor;
 
-import static si.vajnartech.moonstalker.OpCodes.MSG_CONN_ERROR;
-import static si.vajnartech.moonstalker.OpCodes.MSG_ERROR;
+import static si.vajnartech.moonstalker.C.ST_ERROR;
+import static si.vajnartech.moonstalker.OpCodes.MSG_CONN_TIMEOUT;
 import static si.vajnartech.moonstalker.OpCodes.MSG_INFO;
-import static si.vajnartech.moonstalker.OpCodes.MSG_POS;
+import static si.vajnartech.moonstalker.OpCodes.MSG_POSITION;
 import static si.vajnartech.moonstalker.OpCodes.MSG_READY;
 import static si.vajnartech.moonstalker.OpCodes.MSG_WARNING;
 
@@ -13,9 +13,9 @@ import java.io.BufferedReader;
 
 public class CmdPing extends Controller<String>
 {
-    public CmdPing(QueueUI queue)
+    public CmdPing(Processor machine)
     {
-        super("ping", queue);
+        super("ping", machine);
     }
 
     @Override
@@ -24,17 +24,17 @@ public class CmdPing extends Controller<String>
         String msg = getParams(cmdResult);
 
         if (cmdResult.equals("RDY")) {
-            queue.obtainMessage(MSG_READY).sendToTarget();
+            machine.set(MSG_READY);
         } else if (cmdResult.equals("TIMEOUT")) {
-            queue.obtainMessage(MSG_CONN_ERROR).sendToTarget();
+            machine.set(MSG_CONN_TIMEOUT);
         } else if (cmdResult.startsWith("ERROR")) {
-            queue.obtainMessage(MSG_ERROR, msg).sendToTarget();
+            machine.set(ST_ERROR, msg);
         } else if (cmdResult.startsWith("WARNING")) {
-            queue.obtainMessage(MSG_WARNING, msg).sendToTarget();
+            machine.set(MSG_WARNING);
         } else if (cmdResult.startsWith("INFO")) {
-            queue.obtainMessage(MSG_INFO, msg).sendToTarget();
+            machine.set(MSG_INFO, msg);
         } else if (cmdResult.startsWith("POS")) {
-            queue.obtainMessage(MSG_POS, msg).sendToTarget();
+            machine.set(MSG_POSITION, msg);
         }
     }
 
