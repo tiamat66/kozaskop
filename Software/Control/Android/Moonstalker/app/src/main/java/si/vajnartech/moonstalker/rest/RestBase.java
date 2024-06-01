@@ -15,11 +15,11 @@ import java.net.ConnectException;
 import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
 
-import si.vajnartech.moonstalker.processor.QueueUI;
+import si.vajnartech.moonstalker.processor.Processor;
 
 public abstract class RestBase<P, R> extends AsyncTaskExecutor<String, Void, R>
 {
-    protected QueueUI queue;
+    protected Processor machine;
     private final Gson gson = new Gson();
     public static final String TAG                = "REST";
     public static final int    SOCKET_TIMEOUT     = -100;
@@ -35,11 +35,11 @@ public abstract class RestBase<P, R> extends AsyncTaskExecutor<String, Void, R>
     protected       String    responseMessage = "";
     protected       Exception serverException = null;
 
-    public RestBase(String url, String user, String pwd, String auth, QueueUI queue)
+    public RestBase(String url, String user, String pwd, String auth, Processor machine)
     {
         super();
         this.url = url;
-        this.queue = queue;
+        this.machine = machine;
         new RestLogin(this, auth, user, pwd).execute();
     }
 
@@ -136,7 +136,7 @@ public abstract class RestBase<P, R> extends AsyncTaskExecutor<String, Void, R>
 
     protected void onFailure()
     {
-        queue.obtainMessage(MSG_CONN_ERROR).sendToTarget();
+        machine.set(MSG_CONN_ERROR);
     }
 
     @Override

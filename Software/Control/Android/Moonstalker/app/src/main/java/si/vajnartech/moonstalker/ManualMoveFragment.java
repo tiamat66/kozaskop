@@ -1,7 +1,6 @@
 package si.vajnartech.moonstalker;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -27,10 +26,8 @@ public class ManualMoveFragment extends MyFragment implements View.OnTouchListen
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent)
     {
-        Log.i("pepe", "Tuknu: " + motionEvent.getAction());
         switch (motionEvent.getAction()) {
             case MotionEvent.ACTION_MOVE:
-            case MotionEvent.ACTION_DOWN:
                 if (fingerDown.get()) break;
                 fingerDown.set(true);
                 act.moveStart("N");
@@ -38,8 +35,6 @@ public class ManualMoveFragment extends MyFragment implements View.OnTouchListen
             case MotionEvent.ACTION_UP:
                 fingerDown.set(false);
                 act.moveEnd();
-
-
         }
         view.performClick();
         return true;

@@ -11,9 +11,9 @@ import java.io.BufferedReader;
 public class CmdMove extends Controller<String>
 {
     protected String object;
-    public CmdMove(QueueUI queue, String object)
+    public CmdMove(Processor machine, String object)
     {
-        super("move", queue);
+        super("move", machine);
         this.object = object;
     }
 
@@ -22,11 +22,11 @@ public class CmdMove extends Controller<String>
     {
         if (cmdResult != null) {
             if (cmdResult.equals("NOT_RDY")) {
-                queue.obtainMessage(MSG_NOT_READY).sendToTarget();
+                machine.set(MSG_NOT_READY);
             } else if (cmdResult.equals("TIMEOUT")) {
-                queue.obtainMessage(MSG_CONN_ERROR).sendToTarget();
+                machine.set(MSG_CONN_ERROR);
             } else if (cmdResult.startsWith("MV_ACK")) {
-                queue.obtainMessage(MSG_MV_ACK).sendToTarget();
+                machine.set(MSG_MV_ACK);
             }
         }
     }

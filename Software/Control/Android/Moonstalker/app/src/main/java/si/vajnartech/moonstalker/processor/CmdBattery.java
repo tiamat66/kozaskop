@@ -9,7 +9,7 @@ import java.io.BufferedReader;
 
 public class CmdBattery extends Controller<String>
 {
-    public CmdBattery(QueueUI queue) {
+    public CmdBattery(Processor queue) {
         super("battery", queue);
     }
 
@@ -19,9 +19,9 @@ public class CmdBattery extends Controller<String>
         String msg = getParams(cmdResult);
 
         if (cmdResult.startsWith("BTRY")) {
-            queue.obtainMessage(MSG_BATTERY_RES, msg).sendToTarget();
+            machine.set(MSG_BATTERY_RES, msg);
         }  else if (cmdResult.equals("TIMEOUT")) {
-            queue.obtainMessage(MSG_CONN_ERROR).sendToTarget();
+            machine.set(MSG_CONN_ERROR);
         }
     }
 

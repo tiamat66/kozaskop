@@ -31,27 +31,18 @@ public final class C
   // Telescope status values
   public static final int ST_READY =    1;
   public static final int ST_ERROR =    2;
-  static final int ST_TRACING =  5;
-  public static final int ST_MOVING =   6;
-  static final int ST_BTRY_LOW = 7;
-  static final int ST_NOT_CAL =  9;
-  public static final int ST_NOT_CONNECTED = 10;
-  static final int ST_CONNECTED     = 12;
-  public static final int ST_CALIBRATING   = 13;
-  static final int ST_MANUAL   = 14;
-  public static final int ST_CALIBRATED   = 17;
-  static final int ST_MOVE_TO_OBJECT = 18;
-  public static final int ST_NOT_READY = 19;
-  static final int ST_WAITING_ACK = 20;
-  public static final int ST_WAITING = 21;
-  public static final int ST_CONNECTION_ERROR = 22;
-  public static final int ST_WARNING = 23;
-  public static final int ST_INFO = 24;
-  public static final int ST_BATTERY = 25;
-  public static final int ST_ASTRO_DATA = 26;
-  public static final int ST_POS = 27;
+  public static final int ST_NOT_READY = 3;
+  public static final int ST_CONNECTION_ERROR = 4;
 
-  public static final int ST_IDLE = 28;
+  // Telescope mode values
+  static final int MD_TRACING =  1;
+  public static final int MD_MOVING =   2;
+  public static final int MD_NOT_CAL =  3;
+  public static final int MD_CALIBRATING   = 4;
+  public static final int MD_MANUAL   = 5;
+  public static final int MD_CALIBRATED   = 6;
+  public static final int MD_MOVE_TO_OBJECT = 7;
+  public static final int MD_NOT_CALIBRATED   = 8;
 
   // Triggers
   static final int ST_MOVING_S = 16;

@@ -1,7 +1,7 @@
 package si.vajnartech.moonstalker.processor;
 
 import static si.vajnartech.moonstalker.OpCodes.MSG_CONN_ERROR;
-import static si.vajnartech.moonstalker.OpCodes.MSG_GET_ASTRO_DATA;
+import static si.vajnartech.moonstalker.OpCodes.MSG_GOT_ASTRO_DATA;
 
 import com.google.gson.Gson;
 
@@ -9,18 +9,18 @@ import java.io.BufferedReader;
 
 public class CmdGetAstroData extends Controller<DataAstroObj>
 {
-    public CmdGetAstroData(QueueUI queue)
+    public CmdGetAstroData(Processor machine)
     {
-        super("get_astro_data", queue);
+        super("get_astro_data", machine);
     }
 
     @Override
     protected void onPostExecute(DataAstroObj astroData)
     {
         if (astroData == null) {
-            queue.obtainMessage(MSG_CONN_ERROR).sendToTarget();
+            machine.set(MSG_CONN_ERROR);
         } else {
-            queue.obtainMessage(MSG_GET_ASTRO_DATA, astroData).sendToTarget();
+            machine.set(MSG_GOT_ASTRO_DATA, astroData);
         }
     }
 

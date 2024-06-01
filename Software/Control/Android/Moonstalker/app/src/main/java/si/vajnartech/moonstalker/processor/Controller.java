@@ -8,11 +8,11 @@ public abstract class Controller<R> extends RestBase<String, R>
     public static String PWD = "AldebaraN7";
     public static String USR = "vajnar";
 
-    public Controller(String cmd, QueueUI queue)
+    public Controller(String cmd, Processor machine)
     {
         super(Controller.URL + "controller/" + cmd,
                 Controller.USR, Controller.PWD,
-                Controller.URL + "token/", queue);
+                Controller.URL + "token/", machine);
     }
 
     protected String getParams(String val)

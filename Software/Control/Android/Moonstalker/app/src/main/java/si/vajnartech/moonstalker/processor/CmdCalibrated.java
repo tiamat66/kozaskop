@@ -6,9 +6,9 @@ public class CmdCalibrated extends Controller<Void>
 {
     protected String object;
 
-    public CmdCalibrated(QueueUI queue, String object)
+    public CmdCalibrated(Processor machine, String object)
     {
-        super("calibrated", queue);
+        super("calibrated", machine);
         this.object = object;
     }
 

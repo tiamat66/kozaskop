@@ -128,7 +128,7 @@ public class SelectFragment extends MyFragment
 
   public static void setPositionString(MainActivity act)
   {
-    act.terminal.setText(formatPositionString(act.ctrl.az, act.ctrl.h, 0));
+//    act.terminal.setText(formatPositionString(act.ctrl.az, act.ctrl.h, 0));
   }
 
   public static void setTelescopeLocationString(MainActivity ctx, int a, int h)

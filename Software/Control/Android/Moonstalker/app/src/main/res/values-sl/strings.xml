@@ -11,7 +11,7 @@
   <string name="connecting">povezujem</string>
   <string name="connected">povezan</string>
   <string name="tracing">sledim</string>
-  <string name="moving">Premikam</string>
+  <string name="moving">premikam</string>
   <string name="initializing">inicializiram</string>
   <string name="calibrated">teleskop kalibriran</string>
   <string name="move">Premakni</string>
@@ -39,6 +39,7 @@
   <string name="waiting">čakam…</string>
   <string name="end_limit_sw_trig">Sprozeno stikalo za omejitev gibanja</string>
   <string name="btry_low">Baterija prazna</string>
-
+  <string name="timeout">brez odziva</string>
+  <string name="btry_voltage">napetost baterije %s V</string>
 
 </resources>

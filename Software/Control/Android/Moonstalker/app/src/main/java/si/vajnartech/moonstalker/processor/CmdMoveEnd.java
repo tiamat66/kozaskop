@@ -2,7 +2,6 @@ package si.vajnartech.moonstalker.processor;
 
 import static si.vajnartech.moonstalker.OpCodes.MSG_CONN_ERROR;
 import static si.vajnartech.moonstalker.OpCodes.MSG_MVE_ACK;
-import static si.vajnartech.moonstalker.OpCodes.MSG_NOT_READY;
 
 import com.google.gson.Gson;
 
@@ -10,21 +9,19 @@ import java.io.BufferedReader;
 
 public class CmdMoveEnd extends Controller<String>
 {
-    public CmdMoveEnd(QueueUI queue)
+    public CmdMoveEnd(Processor queue)
     {
-        super("move_end", queue);
+        super("end_move", queue);
     }
 
     @Override
     protected void onPostExecute(String cmdResult)
     {
         if (cmdResult != null) {
-            if (cmdResult.equals("NOT_RDY")) {
-                queue.obtainMessage(MSG_NOT_READY).sendToTarget();
-            } else if (cmdResult.equals("TIMEOUT")) {
-                queue.obtainMessage(MSG_CONN_ERROR).sendToTarget();
+           if (cmdResult.equals("TIMEOUT")) {
+               machine.set(MSG_CONN_ERROR) ;
             } else if (cmdResult.startsWith("MVE_ACK")) {
-                queue.obtainMessage(MSG_MVE_ACK).sendToTarget();
+               machine.set(MSG_MVE_ACK);
             }
         }
     }

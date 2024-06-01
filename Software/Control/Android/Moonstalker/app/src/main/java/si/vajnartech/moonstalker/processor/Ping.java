@@ -3,11 +3,11 @@ package si.vajnartech.moonstalker.processor;
 public class Ping extends Thread
 {
     protected boolean running;
-    protected QueueUI queue;
+    protected Processor machine;
 
-    public Ping(QueueUI queue)
+    public Ping(Processor machine)
     {
-        this.queue = queue;
+        this.machine = machine;
         running = true;
         start();
     }
@@ -22,7 +22,7 @@ public class Ping extends Thread
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-            new CmdPing(queue);
+            new CmdPing(machine);
         }
     }
 }
